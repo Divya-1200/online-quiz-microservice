@@ -4,7 +4,7 @@ const {fetchQuestions, createQuestions, updateQuestions, deleteQuestions} = requ
 
 router.route("/").get(fetchQuestions);
 router.route("/").post(createQuestions);
-router.route("/").put(updateQuestions);
+router.route("/:id").patch(updateQuestions);
 router.route("/").delete(deleteQuestions);
 
 
