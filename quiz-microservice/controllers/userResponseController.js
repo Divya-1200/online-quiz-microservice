@@ -1,11 +1,24 @@
-const UserResponse = require('../models/userResponse');
+const UserResponse = require('../models/userResponseModel');
 
 
 const createUserResponse = async (req, res) => {
+    console
+    const {quizId, userId, questionId, selectedOptionId} = req.body;
     try {
-        const userResponse = new UserResponse(req.body);
-        const savedUserResponse = await userResponse.save();
-        res.status(201).json(savedUserResponse);
+       
+        const saveUserResponse = new UserResponse({
+            quizId,
+            userId,
+            questionId, 
+            selectedOptionId
+        });
+        await saveUserResponse.save();
+        const result = {
+            statusCode: 201,
+            status: 'success',
+            message: 'response recorded successfully',
+        };
+        res.json(result);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -15,7 +28,7 @@ const createUserResponse = async (req, res) => {
 const getUserResponsesByUserId = async (req, res) => {
     const { userId } = req.params;
     try {
-        const userResponses = await UserResponse.find({ userId });
+        const userResponses = await UserResponse.find({ userId }).populate("quizId");
         res.json(userResponses);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const userResponseSchema = new Schema({
     quizId: {
         type: Schema.Types.ObjectId,
-        ref: 'Quiz',
-        required: true
+        ref: 'Quiz'
     },
     userId: String,
     questionId: {

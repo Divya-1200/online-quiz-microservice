@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-{getRooms, getRoom, updatedRoom, createRoom, deleteRoom}
 const roomSchema = new Schema({
 
     quiz: {

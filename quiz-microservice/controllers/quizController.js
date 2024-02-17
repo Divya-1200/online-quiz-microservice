@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Quiz =  require("../models/quizModel");
 const Question = require("../models/questionModel");
+
+
 const fetchQuizzes = asyncHandler(async(req, res) => {
     try {
         const quizzes = await Quiz.find().populate('questions');
@@ -16,22 +18,21 @@ const fetchQuiz= asyncHandler(async(req, res) => {
     try {
         let quizzes;
         if (id) {
-            // If ID parameter is provided, fetch a specific quiz by its ID
-            const quiz = await Quiz.findById(id);
+            const quiz = await Quiz.findById(id).populate('questions');
             if (!quiz) {
                 return res.status(404).json({ message: 'Quiz not found' });
             }
             quizzes = [quiz];
         } else {
-            // If no ID parameter is provided, fetch all quizzes
             quizzes = await Quiz.find();
         }
-
-        res.json(quizzes); // Respond with the fetched quiz or quizzes
+        res.json(quizzes); 
     } catch (error) {
-        res.status(500).json({ message: error.message }); // Handle errors
+        res.status(500).json({ message: error.message });
     }
 });
+
+
 const createQuestions = asyncHandler(async(req, res) => {
     try {
         const { title, adminUserId, questions } = req.body;
