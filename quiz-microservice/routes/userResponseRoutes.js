@@ -4,7 +4,7 @@ const { createUserResponse, getUserResponsesByUserId, updateUserResponse, delete
 
 
 // router.route("/").get(getUserResponses);
-router.route("/:userid").get(getUserResponsesByUserId);
+router.route("/:userId").get(getUserResponsesByUserId);
 router.route("/").post(createUserResponse);
 router.route("/:id").patch(updateUserResponse);
 router.route("/:id").delete(deleteUserResponse);

@@ -28,7 +28,7 @@ const createUserResponse = async (req, res) => {
 const getUserResponsesByUserId = async (req, res) => {
     const { userId } = req.params;
     try {
-        const userResponses = await UserResponse.find({ userId }).populate("quizId");
+        const userResponses = await UserResponse.find({ userId });
         res.json(userResponses);
     } catch (error) {
         res.status(500).json({ message: error.message });
