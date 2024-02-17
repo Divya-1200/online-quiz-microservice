@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Room =  require("../models/roomModel");
+const amqp = require('amqplib');
 
 
 const getRooms = asyncHandler(async(req, res) => {
@@ -29,15 +30,31 @@ const getRoom = asyncHandler(async(req, res) => {
 
 const createRoom = asyncHandler(async(req, res) =>{
     try {
-        const { roomId, quiz, participants } = req.body;
+        const {  quizId, participants } = req.body;
         const newRoom = new Room({
-            roomId,
-            quiz,
+        
+            quizId,
             participants
         });
-        const savedRoom = await newRoom.save();
+        await newRoom.save();
 
-        // res.status(201).json(savedRoom); 
+        // Publish message to RabbitMQ for each participant added
+        const rabbitMQConnection = await amqp.connect('amqp://localhost');
+        const channel = await rabbitMQConnection.createChannel();
+        const queueName = 'participant_added';
+    
+        participants.forEach(participant => {
+            const notificationData = {
+                roomId: newRoom._id,
+                participantId: participant.id, 
+            };
+            console.log(notificationData);
+            channel.sendToQueue(queueName, Buffer.from(JSON.stringify(notificationData)));
+        });
+    
+        await channel.close();
+        await rabbitMQConnection.close();
+
         const result = {
             statusCode: 201,
             status: 'success',
