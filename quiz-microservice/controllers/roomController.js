@@ -48,7 +48,6 @@ const createRoom = asyncHandler(async(req, res) =>{
                 roomId: newRoom._id,
                 participantId: participant.id, 
             };
-            console.log(notificationData);
             channel.sendToQueue(queueName, Buffer.from(JSON.stringify(notificationData)));
         });
     
