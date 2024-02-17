@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Quiz =  require("../models/quizModel");
 const Question = require("../models/questionModel");
-const fetchQuestions = asyncHandler(async(req, res) => {
+const fetchQuizzes = asyncHandler(async(req, res) => {
     try {
         const quizzes = await Quiz.find().populate('questions');
         res.json(quizzes);
@@ -10,16 +10,33 @@ const fetchQuestions = asyncHandler(async(req, res) => {
     }
 });
 
+const fetchQuiz= asyncHandler(async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        let quizzes;
+        if (id) {
+            // If ID parameter is provided, fetch a specific quiz by its ID
+            const quiz = await Quiz.findById(id);
+            if (!quiz) {
+                return res.status(404).json({ message: 'Quiz not found' });
+            }
+            quizzes = [quiz];
+        } else {
+            // If no ID parameter is provided, fetch all quizzes
+            quizzes = await Quiz.find();
+        }
+
+        res.json(quizzes); // Respond with the fetched quiz or quizzes
+    } catch (error) {
+        res.status(500).json({ message: error.message }); // Handle errors
+    }
+});
 const createQuestions = asyncHandler(async(req, res) => {
     try {
         const { title, adminUserId, questions } = req.body;
-
-        // Create an array to hold references to the questions
         const questionIds = [];
-
-        // Iterate over the questions array from the request body
         for (const questionData of questions) {
-            // Create a new question document
             const newQuestion = new Question({
                 text: questionData.text,
                 options: questionData.options,
@@ -43,7 +60,6 @@ const createQuestions = asyncHandler(async(req, res) => {
 
 const updateQuestions = asyncHandler(async(req, res) => {
     const { id } = req.params;
-    console.log("hola");
     try {
         let quiz = await Quiz.findById(id);
         if (!quiz) {
@@ -57,15 +73,12 @@ const updateQuestions = asyncHandler(async(req, res) => {
         }
         if (req.body.questions) {
             for (const questionData of req.body.questions) {
-                console.log("here in ques",questionData);
                     let question = await Question.findById(questionData._id);
                     if (!question) {
                         return res.status(404).json({ message: `Question with ID ${questionData._id} not found` });
                     }
                     if (questionData._delete) {
-                        console.log("here in ques delete",questionData);
                         quiz.questions.pull(questionData._id);
-                        // await question.remove();
                     } else {
                         if(questionData._id){
                             if (questionData.text) {
@@ -107,13 +120,18 @@ const updateQuestions = asyncHandler(async(req, res) => {
 });
 
 const deleteQuestions = asyncHandler(async(req, res) => {
-    try{
-        const questions = "hello, Jazu";
-        res.json({ success: true, data: questions });
+    const { id } = req.params; 
+    try {
+        const quiz = await Quiz.findById(id);
+        if (!quiz) {
+            return res.status(404).json({ message: 'Quiz not found' });
+        }
+        await quiz.remove();
+        res.json({ message: 'Quiz deleted successfully' });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ message: error.message });
     }
 });
 
 
-module.exports = {fetchQuestions, createQuestions, updateQuestions, deleteQuestions} ;
+module.exports = {fetchQuizzes, fetchQuiz, createQuestions, updateQuestions, deleteQuestions} ;
