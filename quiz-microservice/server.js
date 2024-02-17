@@ -15,7 +15,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.use('/api/quiz', quizRoutes);
-// app.use('/api/rooms', roomRoutes);
+app.use('/api/rooms', roomRoutes);
+app.use('/api/answer', roomRoutes);
 
 app.get("/", (req, res) => {
     res.send("API is running.. successfully");
