@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> 
 	</parent>
 	<groupId>com.user</groupId>
 	<artifactId>userAuthentication</artifactId>
@@ -38,7 +38,7 @@
 		<dependency>
    			<groupId>mysql</groupId>
     		<artifactId>mysql-connector-java</artifactId>
-    		<version>8.0.26</version> <!-- Use the appropriate version -->
+    		<version>8.0.26</version> 
 		</dependency>
 
 	</dependencies>

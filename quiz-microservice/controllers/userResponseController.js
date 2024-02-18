@@ -2,10 +2,8 @@ const UserResponse = require('../models/userResponseModel');
 
 
 const createUserResponse = async (req, res) => {
-    console
     const {quizId, userId, questionId, selectedOptionId} = req.body;
     try {
-       
         const saveUserResponse = new UserResponse({
             quizId,
             userId,

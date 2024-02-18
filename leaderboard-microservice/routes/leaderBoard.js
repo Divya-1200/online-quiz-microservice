@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 router.patch('/:quizId/:userId', async (req, res) => {
     try {
         const { quizId, userId, score } = req.body;
-        // const leaderboardEntry = await Leaderboard.create({ quizId, userId, score });
+        const leaderboardEntry = await Leaderboard.create({ quizId, userId, score });
         res.status(201).json(leaderboardEntry);
     } catch (error) {
         res.status(400).json({ message: error.message });
