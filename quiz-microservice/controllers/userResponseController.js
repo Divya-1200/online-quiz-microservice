@@ -1,7 +1,13 @@
 const UserResponse = require('../models/userResponseModel');
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
 
 
 const createUserResponse = async (req, res) => {
+   
+    const protoDefinition = protoLoader.loadSync("/Users/divyap/divya/home-workshop/microservice-project/leaderboard-microservice/leaderboard.proto");  
+    const leaderboardProto = grpc.loadPackageDefinition(protoDefinition).leaderboard;
+    const client = new leaderboardProto.LeaderboardService(`0.0.0.0:50051`, grpc.credentials.createInsecure());    
     const {quizId, userId, questionId, selectedOptionId} = req.body;
     try {
         const saveUserResponse = new UserResponse({
@@ -11,6 +17,17 @@ const createUserResponse = async (req, res) => {
             selectedOptionId
         });
         await saveUserResponse.save();
+        const request = {
+            quizId: quizId, // Extract data from your route or application state
+            userId: userId,
+            score: 100,
+        };
+        try {
+            await client.updateLeaderboard(request);
+            res.json(result);
+        } catch (error) {
+            console.error('Error updating leaderboard:', error);
+        }    
         const result = {
             statusCode: 201,
             status: 'success',

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package leaderboard;
+
+service LeaderboardService {
+    rpc UpdateLeaderboard(LeaderboardEntry) returns (LeaderboardEntry);
+}
+
+message LeaderboardEntry {
+    string quizId = 1;
+    string userId = 2;
+    int32 score = 3;
+}

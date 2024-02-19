@@ -1,36 +1,18 @@
 const express = require('express');
-const router = express.Router();
 const Leaderboard = require('../models/leaderBoardModel');
 
 
-router.post('/', async (req, res) => {
+async function updateLeaderboard() {
+    // const { quizId, userId, score } = call.request;
     try {
-        const { quizId, userId, score } = req.body;
-        const leaderboardEntry = await Leaderboard.create({ quizId, userId, score });
-        res.status(201).json(leaderboardEntry);
+        // Update leaderboard
+        // const leaderboardEntry = await Leaderboard.create({ quizId, userId, score });
+        // callback(null, leaderboardEntry);
+        console.log("vanakamm da mapla");
+        console.log("thanks to the lord");
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        callback(error);
     }
-});
+}
 
-router.patch('/:quizId/:userId', async (req, res) => {
-    try {
-        const { quizId, userId, score } = req.body;
-        const leaderboardEntry = await Leaderboard.create({ quizId, userId, score });
-        res.status(201).json(leaderboardEntry);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-});
-
-router.get('/:quizId', async (req, res) => {
-    try {
-        const { quizId } = req.params;
-        const leaderboardEntries = await Leaderboard.find({ quizId });
-        res.json(leaderboardEntries);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-module.exports = router;
+module.exports = {updateLeaderboard};
