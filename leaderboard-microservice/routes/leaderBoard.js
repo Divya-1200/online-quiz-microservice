@@ -2,17 +2,24 @@ const express = require('express');
 const Leaderboard = require('../models/leaderBoardModel');
 
 
-async function updateLeaderboard() {
-    // const { quizId, userId, score } = call.request;
+router.patch('/:quizId/:userId', async (req, res) => {
     try {
-        // Update leaderboard
+        const { quizId, userId, score } = req.body;
         // const leaderboardEntry = await Leaderboard.create({ quizId, userId, score });
-        // callback(null, leaderboardEntry);
-        console.log("vanakamm da mapla");
-        console.log("thanks to the lord");
+        res.status(201).json(leaderboardEntry);
     } catch (error) {
-        callback(error);
+        res.status(400).json({ message: error.message });
     }
-}
+});
 
-module.exports = {updateLeaderboard};
+router.get('/:quizId', async (req, res) => {
+    try {
+        const { quizId } = req.params;
+        const leaderboardEntries = await Leaderboard.find({ quizId });
+        res.json(leaderboardEntries);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+module.exports = router;

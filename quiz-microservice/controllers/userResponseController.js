@@ -4,12 +4,10 @@ const protoLoader = require('@grpc/proto-loader');
 
 
 const createUserResponse = async (req, res) => {
-   
-    const protoDefinition = protoLoader.loadSync("/Users/divyap/divya/home-workshop/microservice-project/leaderboard-microservice/leaderboard.proto");  
-    const leaderboardProto = grpc.loadPackageDefinition(protoDefinition).leaderboard;
-    const client = new leaderboardProto.LeaderboardService(`0.0.0.0:50051`, grpc.credentials.createInsecure());    
+    console
     const {quizId, userId, questionId, selectedOptionId} = req.body;
     try {
+       
         const saveUserResponse = new UserResponse({
             quizId,
             userId,
