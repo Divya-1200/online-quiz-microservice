@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  
+      - "15672:15672"  
+
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    ports:
+      - "3008:3008" 
+    depends_on:
+      - rabbitmq  

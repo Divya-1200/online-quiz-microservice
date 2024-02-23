@@ -4,9 +4,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import json
+import signal
+import sys
+
 
 app = Flask(__name__)
-
+running = True
 def send_email_notification(sender_email, sender_password, recipient_email, subject, body):
     try:
         # Construct email message
@@ -43,22 +46,28 @@ def index():
     return 'Notification service is running.'
 
 def consume_messages():
+    global running
     try:
         # Connect to RabbitMQ server
-        connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
         channel = connection.channel()
-        print("Here is the message")
         channel.queue_declare(queue='participant_added')
-
         channel.basic_consume(queue='participant_added', on_message_callback=callback)
-
         print('Waiting for messages. To exit press CTRL+C')
-        channel.start_consuming()
+        while running:  
+            channel.start_consuming()
     except KeyboardInterrupt:
         print('Interrupted, closing connection')
+        running = False
         connection.close()
+
+def signal_handler(sig, frame):
+    print('Exiting...')
+    global running
+    running = False
+    sys.exit(0)
 
 if __name__ == '__main__':
     import threading
     threading.Thread(target=consume_messages).start()
-    app.run(debug=True)
+    app.run(debug=True,port=3008)
