@@ -14,6 +14,6 @@ const roomSchema = new Schema({
             default: 'notjoined'
         }
     }]
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Room', roomSchema);

@@ -14,6 +14,6 @@ const userResponseSchema = new Schema({
     },
     selectedOptionId: Number,
     score: Number,
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('UserResponse', userResponseSchema);
