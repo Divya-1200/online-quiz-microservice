@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 
 const optionSchema = new Schema({
-    optionId: Schema.Types.ObjectId,
+    optionId: Number,
     text: String
 });
 

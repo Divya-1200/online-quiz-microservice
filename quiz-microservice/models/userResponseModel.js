@@ -12,10 +12,8 @@ const userResponseSchema = new Schema({
         ref: 'Question', 
         required: true
     },
-    selectedOptionId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Question.options' 
-    }
+    selectedOptionId: Number,
+    score: Number,
 });
 
 module.exports = mongoose.model('UserResponse', userResponseSchema);

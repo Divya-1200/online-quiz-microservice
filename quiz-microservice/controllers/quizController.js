@@ -38,9 +38,17 @@ const createQuestions = asyncHandler(async(req, res) => {
         const { title, adminUserId, questions } = req.body;
         const questionIds = [];
         for (const questionData of questions) {
+            let optionNumber = 1;
+            const optionsArray = [];
+            for (const option of questionData.options) {
+                optionsArray.push({
+                    optionId:optionNumber++,  
+                    text: option.text,
+                });
+            }
             const newQuestion = new Question({
                 text: questionData.text,
-                options: questionData.options,
+                options: optionsArray,
                 correctOption: questionData.correctOption
             });
             const savedQuestion = await newQuestion.save();

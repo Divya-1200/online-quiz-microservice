@@ -1,30 +1,38 @@
 const UserResponse = require('../models/userResponseModel');
-const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
+const axios = require('axios');
+const { createQuestion,
+    getAllQuestions,
+    getQuestionById,
+    updateQuestion,
+    deleteQuestion } = require('../controllers/questionController');
 
 
 const createUserResponse = async (req, res) => {
     console
     const {quizId, userId, questionId, selectedOptionId} = req.body;
+    let score=0
+    const answer  = await getQuestionById(questionId);
+    if(answer.correctOption === selectedOptionId)
+    {
+        score = 1;            
+    }
     try {
-       
         const saveUserResponse = new UserResponse({
             quizId,
             userId,
             questionId, 
-            selectedOptionId
+            selectedOptionId,
+            score,
         });
-        await saveUserResponse.save();
+        await saveUserResponse.save();   
         const request = {
-            quizId: quizId, // Extract data from your route or application state
-            userId: userId,
-            score: 100,
+            score: score,
         };
         try {
-            await client.updateLeaderboard(request);
-            res.json(result);
+            await axios.patch(`http://localhost:3005/api/leaderboard/${quizId}/${userId}`, request);        
         } catch (error) {
             console.error('Error updating leaderboard:', error);
+            throw error;
         }    
         const result = {
             statusCode: 201,
