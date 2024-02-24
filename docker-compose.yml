@@ -2,6 +2,17 @@ version: '3.8'
 
 services:
 
+  api-gateway:
+      build:
+        context: ./api-gateway
+      ports:
+        - "80:80"
+      depends_on:
+        - user-microservice
+        - leaderboard-microservice
+        - notification-microservice
+        - quiz-microservice
+
   user-microservice:
     build:
       context: ./user-authentication-microservice
