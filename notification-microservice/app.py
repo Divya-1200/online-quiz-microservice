@@ -24,6 +24,7 @@ def send_email_notification(sender_email, sender_password, recipient_email, subj
             server.starttls()
             server.login(sender_email, sender_password)
             server.send_message(msg)
+            print("sent email")
     except Exception as e:
         print(f"Error sending email: {e}")
 
@@ -49,7 +50,8 @@ def consume_messages():
     global running
     try:
         # Connect to RabbitMQ server
-        connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+        # params = pika.URLParameters('amqps://tyfodnmd:t0Ps2Jnw97Epl3YNe67zm2mjdDdir5Y8@rat.rmq2.cloudamqp.com/tyfodnmd')
+        connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
         channel = connection.channel()
         channel.queue_declare(queue='participant_added')
         channel.basic_consume(queue='participant_added', on_message_callback=callback)

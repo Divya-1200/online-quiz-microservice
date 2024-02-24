@@ -39,7 +39,7 @@ const createRoom = asyncHandler(async(req, res) =>{
         await newRoom.save();
 
         // Publish message to RabbitMQ for each participant added
-        const rabbitMQConnection = await amqp.connect('amqp://localhost');
+        const rabbitMQConnection = await amqp.connect('amqp://rabbitmq');
         const channel = await rabbitMQConnection.createChannel();
         const queueName = 'participant_added';
     
@@ -61,7 +61,8 @@ const createRoom = asyncHandler(async(req, res) =>{
         };
         res.json(result);
     } catch (error) {
-        res.status(400).json({ message: error.message }); 
+        console.log(error);
+        res.status(400).json({ message: error }); 
     }
 });
 

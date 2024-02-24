@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  leaderboard-microservice:
+    build:
+      context: ./leaderboard-microservice
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./leaderboard-microservice:/usr/src/app
+
+  notification-microservice:
+    build:
+      context: ./notification-microservice
+    ports:
+      - "3008:3008"
+    volumes:
+      - ./notification-microservice:/app
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  quiz-microservice:
+    build:
+      context: ./quiz-microservice
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./quiz-microservice:/usr/src/app
+
+  rabbitmq:
+    image: rabbitmq:3.8
+    ports:
+      - "5672:5672"
+    healthcheck:
+      test: "exit 0"
