@@ -6,7 +6,8 @@ services:
     ports:
       - "3008:3008"
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       RABBITMQ_HOST: rabbitmq
 
@@ -15,3 +16,5 @@ services:
     ports:
       - "5672:5672"  
       - "15672:15672" 
+    healthcheck:
+          test: "exit 0"

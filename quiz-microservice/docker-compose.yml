@@ -1,22 +1,22 @@
 version: '3'
 
 services:
-  nodejs:
+  quiz-microservice:
     build: .
     ports:
       - "3000:3000"
     depends_on:
-      - rabbitmq
-    networks:
-      - my_network
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_HOST: rabbitmq
 
   rabbitmq:
     image: rabbitmq:3-management
     ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - my_network
+      - "5673:5672"
+      - "15673:15672"
+    healthcheck:
+          test: "exit 0"
 
-networks:
-  my_network:
+
