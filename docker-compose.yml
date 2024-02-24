@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+
+  user-microservice:
+    build:
+      context: ./user-authentication-microservice
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/my_database
+      SPRING_DATASOURCE_USERNAME: new
+      SPRING_DATASOURCE_PASSWORD: password
+
   leaderboard-microservice:
     build:
       context: ./leaderboard-microservice
@@ -34,3 +48,21 @@ services:
       - "5672:5672"
     healthcheck:
       test: "exit 0"
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: "exit 0"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: my_database 
+      MYSQL_USER: new 
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql-data:
