@@ -4,10 +4,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import json
-import signal
 import sys
+import os
+import requests
+from dotenv import load_dotenv
 
-
+load_dotenv()
 app = Flask(__name__)
 running = True
 def send_email_notification(sender_email, sender_password, recipient_email, subject, body):
@@ -15,7 +17,7 @@ def send_email_notification(sender_email, sender_password, recipient_email, subj
         # Construct email message
         msg = MIMEMultipart()
         msg['From'] = sender_email
-        msg['To'] = "divya.perumal120@gmail.com"
+        msg['To'] = recipient_email
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain'))
 
@@ -32,12 +34,17 @@ def callback(ch, method, properties, body):
     try:
         data = json.loads(body)
         room = data.get('roomId')
-        participant = data.get('participantId')
-        sender_email = 'd123j45mail@gmail.com'  
-        sender_password = 'redgnncenmzdgqre'  
+        participantId = data.get('participantId')
+        participant_api_url = f'http://localhost/api/users/{participantId}'
+        response = requests.get(participant_api_url)
+        if response.status_code == 200:
+            participant_data = response.json()
+            recipient_email = participant_data.get('email')
+        sender_email = os.getenv("SENDER_EMAIL")
+        sender_password = os.getenv("SENDER_PASSWORD")
         subject = 'New Room Created'
         body = f'A new room with ID {room} has been created. You are invited to join!'
-        send_email_notification(sender_email, sender_password, participant, subject, body)
+        send_email_notification(sender_email, sender_password, recipient_email, subject, body)
         ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
         raise e
