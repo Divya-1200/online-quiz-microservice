@@ -2,10 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const leaderboardRoutes = require('./routes/leaderBoard');
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3005;
-const MONGODB_URI = 'mongodb+srv://NodeProject:newpassword@cluster0.vtynf8i.mongodb.net/?retryWrites=true&w=majority';
+const PORT = 3005;
+
+const MONGODB_URI = process.env.MONGO_URI;
+
 
 app.use(bodyParser.json());
 
