@@ -2,7 +2,7 @@
 
 Brainy Bee is a virtual collaboration app designed for organizations to facilitate interactive quizzes among participants. This README provides an overview of the project's functionalities, technology stack, future implementations, and current working items/features.
 
-## Functional Requirements
+### Functional Requirements
 
 - **Admin Dashboard**: Admin can create, update, and manage quizzes.
 - **Quiz Creation**: Admin can add questions and options for the quiz.
@@ -10,7 +10,7 @@ Brainy Bee is a virtual collaboration app designed for organizations to facilita
 - **Participant Invitation**: Admin can invite participants via email to join the quiz.
 - **Score Tracking**: During the quiz, scores are updated in real-time on a leaderboard.
 
-## Non-Functional Requirements
+### Non-Functional Requirements
 
 - **Security**: User authentication is ensured using Spring Boot and SQL.
 - **Scalability**: Microservices architecture ensures scalability and modularity.
@@ -20,32 +20,36 @@ Brainy Bee is a virtual collaboration app designed for organizations to facilita
 
 ## Tech Stack Details
 
-### User Authentication Microservice
+#### User Authentication Microservice
 - **Tech Stack**: Spring Boot, SQL
 
-### Quiz Microservice
+#### Quiz Microservice
 - **Tech Stack**: MERN (MongoDB, Express.js, React.js, Node.js)
 
 ### Notification Microservice
 - **Tech Stack**: Flask, RabbitMQ
 
-### Leaderboard Microservice
+#### Leaderboard Microservice
 - **Tech Stack**: MERN (MongoDB, Express.js, React.js, Node.js), Redis
 
-## Current Working Item/Feature
+#### Current Working Item/Feature
 
 - **API Gateway Configuration**: Nginx is configured as an API gateway for all microservices.
 
 
-## Future Implementations
+### Future Implementations
 
 - **Automated Question Generation**: Implement machine learning models to generate quiz questions based on given topics.
 - **UI Development**: Create a user-friendly interface for seamless interaction.
 - **Team Quizzes**: Allow teams to compete against each other, fostering collaboration and group problem-solving.
 
-## Architecture Diagram
+### Architecture 
 
 The architecture follows a microservices-based approach where each component is deployed as an independent service. Services communicate through APIs, ensuring loose coupling and scalability.
+![Architecture Diagram](Architecturediagram.jpg)
+
+### Flow Chart
+![Use Case Diagram](UseCase.jpg)
 
 ## Getting Started
 
