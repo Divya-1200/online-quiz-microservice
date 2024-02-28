@@ -73,7 +73,7 @@ services:
       MYSQL_USER: new 
       MYSQL_PASSWORD: password
     volumes:
-      - ./dump:/docker-entrypoint-initdb.d
+      - ./User-sql:/docker-entrypoint-initdb.d
 
 volumes:
   mysql-data:
