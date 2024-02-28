@@ -4,6 +4,7 @@ Brainy Bee is a virtual collaboration app designed for organizations to facilita
 
 ### Functional Requirements
 
+- **User SignIn/ SignUp**: User can sign in with oragnization ID
 - **Admin Dashboard**: Admin can create, update, and manage quizzes.
 - **Quiz Creation**: Admin can add questions and options for the quiz.
 - **Room Creation**: Admin can initiate a quiz by creating a room for participants.
